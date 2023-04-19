@@ -5,25 +5,18 @@ class GUI:
     def __init__(self, master):
         self.master = master
         master.title("Number Multiplication Game - 211ADB070")
-
         self.canvas = Canvas(master, width=300, height=100)
         self.canvas.pack(side=TOP)
-
-        # checkbox
         self.check_var = IntVar()
         self.check_var.set(1)
         self.check = Checkbutton(master, text="Player starts", variable=self.check_var)
         self.check.pack()
-
-        # start button
         self.start_button = Button(master, text="Start", command=self.startGame)
         self.start_button.pack()
 
     def computerMove(self):
-        # hide computer move button
         self.computer_move_button.pack_forget()
 
-        # computer move
         self.game.computerMove()
         self.current_number_label.config(text="Current number: " + str(self.game.currentNumber))
         if self.game.currentNumber >= self.game.lowerBound:
@@ -43,15 +36,13 @@ class GUI:
             self.completeGame()
             return
 
-        # put computer move button or show it if it's already there
         if hasattr(self, 'computer_move_button'):
             self.computer_move_button.pack(side=TOP)
         else:
             self.computer_move_button = Button(self.master, text="Computer move", command=self.computerMove)
             self.computer_move_button.pack(side=TOP)
-        self.waiting_label.config(text="Please click on the computer move button")
 
-        # hide buttons
+        self.waiting_label.config(text="Please click on the computer move button")
         self.button1.pack_forget()
         self.button2.pack_forget()
         self.button3.pack_forget()
@@ -63,23 +54,17 @@ class GUI:
         self.button3.destroy()
         self.lower_bound_label.destroy()
         self.upper_bound_label.destroy()
+        self.waiting_label.destroy()
         self.start_button = Button(self.master, text="Start", command=self.startGame)
         self.start_button.pack()
-
-        # checkbox
         self.check_var = IntVar()
         self.check_var.set(1)
         self.check = Checkbutton(self.master, text="Player starts", variable=self.check_var)
         self.check.pack()
 
-        self.waiting_label.destroy()
-
     def startGame(self):
-        # refresh current number label after each move
         if hasattr(self, 'current_number_label'):
             self.current_number_label.destroy()
-
-        # add label for current number
 
         self.start_button.destroy()
         self.check.destroy()
@@ -92,7 +77,6 @@ class GUI:
         self.button2 = Button(self.frame, text="3", command=lambda: self.playerMove(3), padx=10)
         self.button3 = Button(self.frame, text="4", command=lambda: self.playerMove(4), padx=10)
 
-        # add lower and upper bound labels        
         self.current_number_label = Label(self.master, text="Current number: " + str(self.game.currentNumber), font=("Helvetica", 16))
         self.lower_bound_label = Label(self.master, text="Lower bound: " + str(self.game.lowerBound), font=("Helvetica", 12))
         self.upper_bound_label = Label(self.master, text="Upper bound: " + str(self.game.upperBound), font=("Helvetica", 12))
@@ -107,7 +91,6 @@ class GUI:
             self.computer_move_button.pack(side=TOP)
             self.waiting_label.config(text="Please click on the computer move button")
         else:
-            # center buttons horizontally and vertically
             self.button1.pack(side=LEFT, padx=10)
             self.button2.pack(side=LEFT, padx=10)
             self.button3.pack(side=LEFT, padx=10)
