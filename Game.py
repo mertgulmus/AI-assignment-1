@@ -1,3 +1,5 @@
+# Mert Gulmus / 211ADB070
+
 import time, random
 
 class Game:
