@@ -10,11 +10,13 @@ class Game:
         self.player = playerStarted
         self.done = False
         self.winner = None
+        # generation of the game tree
         self.gameTree = self.generateGameTree(self.currentNumber)
         self.evaluatedTree = self.evaluateTree(self.gameTree)
         self.currentStage = self.evaluatedTree
 
     def generateGameTree(self, current, depth=0):
+        # checks if the game is over at this node
         if current > self.lowerBound:
             return {
                 'number': current,
@@ -23,6 +25,7 @@ class Game:
                 'depth': depth
             }
         currentChildren = []
+        # generates the children of the current node
         for move in self.possibleMoves:
             currentChildren.append(self.generateGameTree(current*move, depth+1))
         return {
@@ -33,9 +36,11 @@ class Game:
         }
 
     def evaluateTree(self, tree, depth=0):
+        # determines if the node's player is the maximizer or minimizer
         player = depth % 2 + 1
         possibleOutcomes = [child['value'] for child in tree['children']]
         if len(possibleOutcomes) > 0:
+            # determines the value of the node based on the player
             tree['value'] = max(possibleOutcomes) if player == 1 else min(possibleOutcomes)
         for child in tree['children']:
             self.evaluateTree(child, depth+1)
@@ -51,12 +56,7 @@ class Game:
         possibleMoves = [child['number'] for child in tree['children']]
         possibleOutcomes = [child['value'] for child in tree['children']]
         player = 1 if tree['depth'] % 2 == 0 else -1
-        # commented out the print statements
-        # print('Current number: ' + str(tree['number']))
-        # print('Current depth: ' + str(tree['depth']))
-        # print('Possible moves: ' + str(possibleMoves))
-        # print('Possible outcomes: ' + str(possibleOutcomes))
-        # print(('Maximizer' if player == 1 else 'Minimizer') + "'s best move:")
+        # determines the best move based on the player
         if player == 1:
             return possibleMoves[possibleOutcomes.index(max(possibleOutcomes))]
         else:
@@ -89,11 +89,6 @@ class Game:
             print('Not your turn!')
 
     def printCurrentStage(self):
-        # commented out the print statements
-        # print('Current number: ' + str(self.currentNumber))
-        # print('Current depth: ' + str(self.currentStage['depth']))
-        # print('Possible moves: ' + str([child['number'] for child in self.currentStage['children']]))
-        # print('Possible outcomes: ' + str([child['value'] for child in self.currentStage['children']]))
         return {
             'number': self.currentNumber,
             'depth': self.currentStage['depth'],
